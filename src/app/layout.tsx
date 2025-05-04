@@ -23,13 +23,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={satoshi.className}>
-        {/* <HolyLoader color="#868686" />
+        <HolyLoader color="#868686" />
         <TopBanner />
         <Providers>
-          <TopNavbar /> */}
+          <TopNavbar />
           {children}
-        {/* </Providers>
-        <Footer /> */}
+        </Providers>
+        <Footer />
       </body>
     </html>
   );
