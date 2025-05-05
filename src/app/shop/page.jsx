@@ -1,3 +1,4 @@
+"use client";
 import BreadcrumbShop from "@/components/shop-page/BreadcrumbShop";
 
 import {
@@ -10,7 +11,6 @@ import {
 import MobileFilters from "@/components/shop-page/filters/MobileFilters";
 import Filters from "@/components/shop-page/filters";
 import { FiSliders } from "react-icons/fi";
-import { newArrivalsData, relatedProductData, topSellingData } from "../page";
 import ProductCard from "@/components/common/ProductCard";
 import {
   Pagination,
@@ -21,8 +21,20 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { useEffect, useState } from "react";
 
 export default function ShopPage() {
+   const [products, setProducts] = useState([]);
+    useEffect(()=>{
+      const fetchProducts = async () => {
+        const res = await fetch("/api/v1/product?storeId=6815dc804f082dbe8174f334", { cache: "no-store" });
+        const data = await res.json();
+        setProducts(data?.data);
+      }
+      fetchProducts();
+  
+    },[])
+    console.log(products);
   return (
     <main className="pb-20">
       <div className="max-w-frame mx-auto px-4 xl:px-0">
@@ -63,11 +75,9 @@ export default function ShopPage() {
             </div>
             <div className="w-full grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
               {[
-                ...relatedProductData.slice(1, 4),
-                ...newArrivalsData.slice(1, 4),
-                ...topSellingData.slice(1, 4),
+                ...products,
               ].map((product) => (
-                <ProductCard key={product.id} data={product} />
+                <ProductCard key={product._id} data={product} />
               ))}
             </div>
             <hr className="border-t-black/10" />

@@ -1,3 +1,5 @@
+"use client";
+
 import ProductListSec from "@/components/common/ProductListSec";
 import Brands from "@/components/homepage/Brands";
 import DressStyle from "@/components/homepage/DressStyle";
@@ -5,6 +7,7 @@ import Header from "@/components/homepage/Header";
 import Reviews from "@/components/homepage/Reviews";
 import { Product } from "@/types/product.types";
 import { Review } from "@/types/review.types";
+import { useEffect, useState } from "react";
 
 export const newArrivalsData: Product[] = [
   {
@@ -174,6 +177,19 @@ export const reviewsData: Review[] = [
 
 
 export default function Home() {
+  const [products, setProducts] = useState<Product[]>([]);
+  useEffect(()=>{
+    const fetchProducts = async () => {
+      const res = await fetch("/api/v1/product?storeId=6815dc804f082dbe8174f334", { cache: "no-store" });
+      const data = await res.json();
+      setProducts(data?.data);
+    }
+    fetchProducts();
+
+  },[])
+  console.log(products);
+  
+  
   return (
     <>
       <Header />
@@ -181,7 +197,7 @@ export default function Home() {
       <main className="my-[50px] sm:my-[72px]">
         <ProductListSec
           title="NEW ARRIVALS"
-          data={newArrivalsData}
+          data={products}
           viewAllLink="/shop#new-arrivals"
         />
         <div className="max-w-frame mx-auto px-4 xl:px-0">
@@ -190,7 +206,7 @@ export default function Home() {
         <div className="mb-[50px] sm:mb-20">
           <ProductListSec
             title="top selling"
-            data={topSellingData}
+            data={products}
             viewAllLink="/shop#top-selling"
           />
         </div>
